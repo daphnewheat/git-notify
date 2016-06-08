@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Setting variables
+#$2 always shows blank within function for some reason, set variable does not
+remote="$2"
+repository="$1"
+
 function run {
 # how we want to extract the variables from the commit message.
 format_name="--format=%cn"
@@ -7,8 +12,10 @@ format_when="--format=%cr"
 format_summary="--format=%s"
 format_body="--format=%b"
 
+
+
 # what repository do we want to watch (default to origin/master)
-if [ -z "$1" ]; then
+if [ -z $repository ]; then
 	repository="origin/master"
 else
 	repository="$1"
@@ -33,9 +40,24 @@ while [ 1 ]; do
         commit_summary=`git log -1 $format_summary $latest_revision`
         commit_body=`git log -1 $format_body $latest_revision`
 
-        # notify the user of the commit.
-        summary="$commit_name committed to $repository $commit_when!"
-        body="$commit_summary\n\n$commit_body"
+        if [ -z $remote ]; then
+            summary="$commit_name committed to $repository $commit_when!"
+            body="$commit_summary\n\n$commit_body"
+        else
+            remote="$2"
+
+            # Update
+            env -i git fetch $remote
+            env -i git rebase $repository
+
+            # notify the user of the commit.
+            summary="Update! $commit_name committed to $repository $commit_when!"
+            body="$commit_summary\n\n$commit_body"
+
+            #Notify user of check, debugging
+            echo "Up to date at" date
+        fi
+
 	if [ "`uname`" == "Darwin" ]
 	then
 		command="osascript -e 'display notification \"$body\" with title \"$summary\"'"
