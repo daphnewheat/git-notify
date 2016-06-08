@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Setting variables
-#$2 always shows blank within function for some reason, set variable does not
 repository="$1"
 remote="$2"
 
@@ -17,8 +16,6 @@ format_body="--format=%b"
 # what repository do we want to watch (default to origin/master)
 if [ -z $repository ]; then
 	repository="origin/master"
-else
-	repository="$1"
 fi
 latest_revision="none"
 
@@ -40,7 +37,9 @@ while [ 1 ]; do
         commit_summary=`git log -1 $format_summary $latest_revision`
         commit_body=`git log -1 $format_body $latest_revision`
 
+        # Check if updates enabled
         if [ -z $remote ]; then
+            # notify the user of the commit
             summary="$commit_name committed to $repository $commit_when!"
             body="$commit_summary\n\n$commit_body"
         else
@@ -49,7 +48,7 @@ while [ 1 ]; do
             env -i git fetch $remote
             env -i git rebase $repository
 
-            # notify the user of the commit.
+            # notify the user of the commit + update
             summary="Update! $commit_name committed to $repository $commit_when!"
             body="$commit_summary\n\n$commit_body"
 
