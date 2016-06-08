@@ -24,6 +24,16 @@ Note the first number in the list, 9541, that is the PID of the script. You can 
 
     kill 9541
 
+Enable auto-update:
+------------------------
+~/code/some-git-repository $ ~/path-to-git-folder/git-notify/git-notify remote/branch remote
+
+Make sure to be in the git repository the remote is from. Both remote/branch and remote must be included in that order to work. If updates are enabled then "Update" will be shown in the desktop notification.
+
+Example:
+Notification: ~/Documents/git $ ~/Documents/git/git-notify/git-notify upstream/develop
+Update: ~/Documents/git $ ~/Documents/git/git-notify/git-notify upstream/develop upstream
+
 Installation:
 ------------
 Just download git-notify and put it somewhere in your path.
