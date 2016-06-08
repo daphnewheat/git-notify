@@ -18,7 +18,7 @@ format_body="--format=%b"
 if [ -z $repository ]; then
 	repository="origin/master"
 else
-	
+	repository="$1"
 fi
 latest_revision="none"
 
@@ -53,8 +53,6 @@ while [ 1 ]; do
             summary="Update! $commit_name committed to $repository $commit_when!"
             body="$commit_summary\n\n$commit_body"
 
-            #Notify user of check, debugging
-            echo "Up to date at" date
         fi
 
 	if [ "`uname`" == "Darwin" ]
