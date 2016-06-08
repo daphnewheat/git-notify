@@ -2,8 +2,8 @@
 
 # Setting variables
 #$2 always shows blank within function for some reason, set variable does not
-remote="$2"
 repository="$1"
+remote="$2"
 
 function run {
 # how we want to extract the variables from the commit message.
@@ -18,7 +18,7 @@ format_body="--format=%b"
 if [ -z $repository ]; then
 	repository="origin/master"
 else
-	repository="$1"
+	
 fi
 latest_revision="none"
 
@@ -44,7 +44,6 @@ while [ 1 ]; do
             summary="$commit_name committed to $repository $commit_when!"
             body="$commit_summary\n\n$commit_body"
         else
-            remote="$2"
 
             # Update
             env -i git fetch $remote
